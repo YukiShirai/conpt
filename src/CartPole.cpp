@@ -14,11 +14,13 @@ namespace conpt
     CartPole::CartPole() : TO_base()
     {
         std::cout << "constructor cartpole  no input for now!!!" << std::endl;
+        auto bound_x = Eigen::MatrixXf::Zero(2,3);
     }
 
     CartPole::CartPole(param::parameter &param) : TO_base()
     {
         std::cout << "constructor cartpole" << std::endl;
+        // bound_x = Eigen::MatrixXf::Zero(2,3);
         // mc = param.get<double>("mc");
         // g = param.get<double>("g");
         // mp = param.get<double>("mp");

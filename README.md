@@ -9,7 +9,7 @@ C++/python codes for contact-implicit trajectory optimization for locomotion and
 - pybind11
 - Eigen3
 - casadi (SHA "402fe583f0d3cf1fc77d1e1ac933f75d86083124") 
-- param, originally from [here](https://github.com/kaityo256/param)
+- [param](https://github.com/YukiShirai/param), originally from [here](https://github.com/kaityo256/param)
 
 
 # Build and Installation
@@ -44,9 +44,25 @@ sudo make install
 sudo ln -s /usr/local/lib/libContactRichOpt.so /usr/lib/libContactRichOpt.so
 ```
 
+# Usage for your project in python (under construction)
+conpt supports python binding, pyconpt, through pybind11. 
+1. Set up virtual environment in `conpt/build`: 
+```
+sudo pip3 install virtualenv
+virtualenv -p /usr/bin/python3 env
+source env/bin/activate
+pip install numpy
+```
+
+2. After you finish installing conpt from source, pyconpt should be ready to be used. For example, 
+```
+from pyconpt import opt
+
+cartpole = opt.CartPole()
+```
 
 
-# Usage for your project (under construction)
+# Usage for your project in C++ (under construction)
 The easiest way is using CMake. 
 1. To call ContactRichOpt in your CMake project, you can do as follows:
 ```
@@ -57,16 +73,17 @@ target_link_libraries(BINARY_NAME
 		                  ContactRichOpt)
 ```
 2. Then, in your c++ code, 
+```
+#include "conpt/CartPole.h"
+```
 
-
-Later, I plan to support python bindings using pybind11.  
 
 # TODO
 - [] support other toy problems
 - [] support python bindings using pybind11. 
 - [] support mixed-integer programming through gurobi
 - [] support stochastic optimization such as chance-constrained optimization.
-- [] integrate with simulator such as pybullet. 
+- [] integrate with simulator such as pybullet / drake. 
 - [] support MPC
 - [] support bilevel optimization
 - [] improve customizability. user should be able to add any constraints through main.cpp. 
@@ -85,9 +102,12 @@ Later, I plan to support python bindings using pybind11.
 ```
 
 # Contact
-If you have any questions, feel free to ask questions via issues. 
+If you have any questions, feel free to ask questions via issues or email. 
 
-Yuki Shirai (yukishirai4869@g.ucla.edu)
+[@YukiShirai](https://github.com/YukiShirai) (yukishirai4869@g.ucla.edu)
+
+# Acknowledgements
+[@ColinTogashi](https://github.com/ColinTogashi) for discussion about CMake and pybind11.
 
 # Reference
 [1] [Y. Shirai, D. K. Jha, A. U. Raghunathan, D. Romeres, "Chance-Constrained Optimization in Contact-Rich Systems

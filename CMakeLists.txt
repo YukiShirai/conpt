@@ -8,6 +8,9 @@ project(
     DESCRIPTION "library for solving contact-implicit trajectory optimization with CMake"
     LANGUAGES CXX)
 
+set(PROJECT CONPT)
+set(LIBRARY conpt)
+
 
 # avoid in src of build 
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
@@ -17,4 +20,4 @@ endif()
 
 add_subdirectory(src)
 add_subdirectory(example)
-
+add_subdirectory(python)

@@ -16,27 +16,25 @@ set(src CartPole.cpp
 
 
 
-add_library(conpt
+add_library(${LIBRARY}
             SHARED
             ${src})
 
-add_library(conpt::conpt ALIAS conpt)
+add_library(conpt::conpt ALIAS ${LIBRARY})
 # Using the concept of namespace, this ALIAS command creates the variable with different name - to distinguish 
 
 # option(BUILD_SHARED_LIBS "Build shared library" ON)
 
-target_compile_features(conpt PUBLIC cxx_std_17)
+target_compile_features(${LIBRARY} PUBLIC cxx_std_17)
 
 
-target_include_directories(conpt INTERFACE 
+target_include_directories(${LIBRARY} INTERFACE 
                             # $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> #/build/include 
                             $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include> #/conpt/include
                             $<INSTALL_INTERFACE:include> # for may case, INSTALL_INTERFACE is /usr/local
                             )
 
-                            message(${CMAKE_BINARY_DIR}/)
-
-set_target_properties(conpt PROPERTIES
+set_target_properties(${LIBRARY} PROPERTIES
 ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib # static library (*.lib) is stored under /build/lib
 LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib # dynamic library (*.so) is stored under /build/lib
 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin # executable file (*.dll) is stored under /build/bin
@@ -46,7 +44,7 @@ RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin # executable file (*.dll) is st
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(casadi REQUIRED)
 find_package(param REQUIRED)
-target_link_libraries(conpt
+target_link_libraries(${LIBRARY}
                         PUBLIC
                         Eigen3::Eigen
                         param
@@ -55,8 +53,8 @@ target_link_libraries(conpt
 
 # install library files including .so
 include(GNUInstallDirs)
-install(TARGETS conpt # specify target to be installed
-    EXPORT conpt-targets # export as conpt-targets
+install(TARGETS ${LIBRARY} # specify target to be installed
+    EXPORT ${LIBRARY}-targets # export as conpt-targets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # static library for lib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # library for lib
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # executable file for lib
@@ -67,42 +65,47 @@ install(TARGETS conpt # specify target to be installed
 # sounds like this part is not necessary?
 # not necessary but you want to use this one to see actual header files. 
 # this install directory keeps saving all structure of build tree
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/conpt
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/${LIBRARY}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} #copy ${CMAKE_SOURCE_DIR}/include/conpt into ${CMAKE_INSTALL_INCLUDEDIR}, which is /usr/local/include
 )
 
 
-install(EXPORT conpt-targets
-    FILE conpt-targets.cmake # actual one and this one is created from targe 
+install(EXPORT ${LIBRARY}-targets
+    FILE ${LIBRARY}-targets.cmake # actual one and this one is created from targe 
     # This one is used to simplify the process of linking to the library
-    NAMESPACE conpt:: # even though it looks like conpt-targets, it uses conpt as name space
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/conpt # where to save
+    NAMESPACE ${LIBRARY}:: # even though it looks like conpt-targets, it uses conpt as name space
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY} # where to save
 )
 
 include(CMakePackageConfigHelpers)
 # create config file
 configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/cmake/conpt-config.cmake.in
-    ${CMAKE_BINARY_DIR}/cmake/conpt-config.cmake
+    ${CMAKE_SOURCE_DIR}/cmake/${LIBRARY}-config.cmake.in
+    ${CMAKE_BINARY_DIR}/cmake/${LIBRARY}-config.cmake
     # used to provide information about how to use the library in other projects
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/conpt
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY}
 )
 # create version file
 write_basic_package_version_file(
-    ${CMAKE_BINARY_DIR}/cmake/conpt-config-version.cmake
+    ${CMAKE_BINARY_DIR}/cmake/${LIBRARY}-config-version.cmake
     VERSION ${PACKAGE_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 # install all configuration files (i.e., .cmake)
 install(
     FILES
-        ${CMAKE_BINARY_DIR}/cmake/conpt-config.cmake
-        ${CMAKE_BINARY_DIR}/cmake/conpt-config-version.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/conpt
+        ${CMAKE_BINARY_DIR}/cmake/${LIBRARY}-config.cmake
+        ${CMAKE_BINARY_DIR}/cmake/${LIBRARY}-config-version.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${LIBRARY}
 )
 
 # export library
-export(EXPORT conpt-targets
-    FILE ${CMAKE_BINARY_DIR}/cmake/conpt-targets.cmake
-    NAMESPACE conpt::
+export(EXPORT ${LIBRARY}-targets
+    FILE ${CMAKE_BINARY_DIR}/cmake/${LIBRARY}-targets.cmake
+    NAMESPACE ${LIBRARY}::
 )
+
+
+# include ( "${CMAKE_CURRENT_LIST_DIR}/cmake/conpt-targets.cmake" )
+# this one is called in cmake.in. In this file, CMAKE_CURRENT_LIST_DIR is the dir where
+# the cmake is actualy installed, which is /usr/local/lib/cmake/conpt
