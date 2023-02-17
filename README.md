@@ -8,8 +8,9 @@ C++/python codes for contact-implicit trajectory optimization for locomotion and
 - C++11
 - pybind11
 - Eigen3
-- casadi (SHA "402fe583f0d3cf1fc77d1e1ac933f75d86083124") 
+- casadi (SHA "402fe583f0d3cf1fc77d1e1ac933f75d86083124"). Note that when you build casadi from source, make sure you do `cmake -DWITH_IPOPT=true`.
 - [param](https://github.com/YukiShirai/param), originally from [here](https://github.com/kaityo256/param)
+- [matplotlib-cpp](https://github.com/lava/matplotlib-cpp). Note that please install this package in your (native) environment.
 
 
 # Build and Installation

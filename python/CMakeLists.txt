@@ -6,6 +6,7 @@ project(pyconpt VERSION 0.0.1 LANGUAGES CXX)
 ####
 
 
+
 #################################################
 
 set(PROJECT pyconpt)
@@ -47,6 +48,7 @@ get_filename_component(PYTHON_LOCATION ${Python_EXECUTABLE} DIRECTORY)
 if ( (PYTHON_LOCATION STREQUAL "/usr/bin") OR (PYTHON_LOCATION STREQUAL "/usr/local/bin") )
     message(WARNING "${Yellow}Using system python! If this is an accident, activate a virtual environment and restart cmake process! Otherwise proceed. ${ColourReset}")
 endif()
+
 
 
 #################################################

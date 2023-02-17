@@ -44,11 +44,19 @@ RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin # executable file (*.dll) is st
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(casadi REQUIRED)
 find_package(param REQUIRED)
+find_package(Python3 COMPONENTS Interpreter Development NumPy REQUIRED)
+find_package(PythonLibs 3.0 REQUIRED)
+include_directories(${PYTHON3_INCLUDE_DIRS} ${NumPy_INCLUDE_DIRS})
+
 target_link_libraries(${LIBRARY}
                         PUBLIC
                         Eigen3::Eigen
                         param
-                        casadi) 
+                        casadi
+                        # the following packages are necessary for matplotlibcpp
+                        ${PYTHON_LIBRARIES}
+                        Python3::NumPy
+                ) 
 
 
 # install library files including .so

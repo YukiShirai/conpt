@@ -7,9 +7,9 @@
 #include <param/param.hpp>
 #include <casadi/casadi.hpp>
 #include <iostream>
+#include <Eigen/Core>
 
-
-
+using namespace Eigen;
 
 namespace conpt
 {
@@ -32,6 +32,23 @@ namespace conpt
         int ny;
         int nz;
         int nu;
+
+        casadi::Opti opti;
+        casadi::MX x;
+        casadi::MX xdot;
+        casadi::MX u;
+        casadi::MX y;
+
+        // for bounds
+        Eigen::MatrixXd xb;
+        Eigen::MatrixXd xdotb;
+        Eigen::MatrixXd ub;
+        Eigen::MatrixXd yb;
+
+        // for optimization matrix
+        Eigen::MatrixXd Q;
+        Eigen::MatrixXd R;
+
         // param::parameter p();
 
     public:
@@ -39,10 +56,11 @@ namespace conpt
         // CartPole(param::parameter p);
         CartPole(param::parameter &param);
         // // CartPole(param::parameter param);
-        //~CartPole();
+        ~CartPole();
 
-        // void bounds(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) override;
-        // void objective(casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) override;
+        void bounds() override;
+        void objective() override;
+        void run(const std::string &solver = "ipopt") override;
         // void initialcondition(casadi::Opti &o, casadi::MX &x0) override;
         // void bounds_finaltime(casadi::Opti &o, casadi::MX &xT) override;
         // void constraint(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) override;

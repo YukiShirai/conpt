@@ -20,10 +20,11 @@ namespace conpt
 
     public:
         TO_base(/* args */){std::cout << "constructor TO runs" << std::endl;};
-        // virtual ~TO_base(){};
+        virtual ~TO_base(){};
 
-        // virtual void bounds(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) = 0;
-        // virtual void objective(casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) = 0;
+        virtual void bounds() = 0;
+        virtual void objective() = 0;
+        virtual void run(const std::string &solver) = 0;
         // virtual void initialcondition(casadi::Opti &o, casadi::MX &x0) = 0;
         // virtual void bounds_finaltime(casadi::Opti &o, casadi::MX &xT) = 0;
         // virtual void constraint(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) = 0;
