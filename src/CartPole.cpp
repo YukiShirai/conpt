@@ -14,13 +14,14 @@ using namespace std;
 namespace conpt
 {
 
-    CartPole::CartPole() : TO_base()
+    CartPole::CartPole() : TO_base(), nx(0), ny(0), nz(0), nu(0)
     {
         std::cout << "constructor cartpole  no input for now with python!!!" << std::endl;
         // auto bound_x = Eigen::MatrixXf::Zero(2,3);
     }
 
-    CartPole::CartPole(param::parameter &param) : TO_base()
+    CartPole::CartPole(param::parameter &param) : TO_base(), nx(param.get<int>("nx")), ny(param.get<int>("ny")), 
+    nz(param.get<int>("nz")), nu(param.get<int>("nu"))
     {
         std::cout << "constructor cartpole with param!" << std::endl;
         // auto bound_x = Eigen::MatrixXf::Zero(2,3);
@@ -36,10 +37,10 @@ namespace conpt
 
         T = param.get<int>("T");
 
-        nx = param.get<int>("nx");
-        ny = param.get<int>("ny");
-        nz = param.get<int>("nz");
-        nu = param.get<int>("nu");
+        // const int nx = param.get<int>("nx");
+        // const int ny = param.get<int>("ny");
+        // const int nz = param.get<int>("nz");
+        // const int nu = param.get<int>("nu");
 
 
         // setup casadi
@@ -102,7 +103,7 @@ namespace conpt
         casadi::MX obj{};
         double sum{};
 
-        cout << obj << endl;
+        // cout << obj << endl;
 
         // for (size_t j = 0; j < u.size1(); j++){
 
@@ -111,19 +112,23 @@ namespace conpt
 
         // }
 
-        cout << sum << endl;
+        // cout << sum << endl;
 
 
         // opti.minimize(sum);
         // opti.minimize(-(x(0, 0) +0.2)* (x(0, 0) +0.2));
-        opti.minimize(pow(x(0, 0)-1, 2));
+        opti.minimize(pow(x(0, 0)-1, 2)+pow(x(1, 0)-2, 2)+pow(x(0, 1)+3, 2));
         // std::cout << pow(x(0, 0), 2) << std::endl;
     }
-    void CartPole::run(const std::string &solver)
+    casadi::OptiSol CartPole::run(const std::string &solver)
     {
         opti.solver(solver);
         casadi::OptiSol sol = opti.solve();
-        cout << sol.value(x) << endl;
+    //         std::cout << "Original conpt solution" << std::endl;
+    // std::cout << "------------------------------" << std::endl;
+    //     cout << sol.value(x) << endl;
+
+        return sol;
         // cout << "here we use value variable --" << endl;
         // cout << sol.value_variables() << endl;
     }

@@ -28,10 +28,10 @@ namespace conpt
         int T;
         // std::vector<double> times;
 
-        int nx;
-        int ny;
-        int nz;
-        int nu;
+        const int nx;
+        const int ny;
+        const int nz;
+        const int nu;
 
         casadi::Opti opti;
         casadi::MX x;
@@ -60,7 +60,7 @@ namespace conpt
 
         void bounds() override;
         void objective() override;
-        void run(const std::string &solver = "ipopt") override;
+        casadi::OptiSol run(const std::string &solver = "ipopt") override;
         // void initialcondition(casadi::Opti &o, casadi::MX &x0) override;
         // void bounds_finaltime(casadi::Opti &o, casadi::MX &xT) override;
         // void constraint(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) override;

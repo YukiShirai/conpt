@@ -12,6 +12,7 @@
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
 
+#include "plot.hpp"
 
 #include <Eigen/Core>
 // #include <eigen3/Eigen/Core> if you don't specify Eigen3::Eigen in cmakelists.txt
@@ -99,11 +100,11 @@ int main()
     // ocp.Q << 0, 0, 0, 1;
     ocp.Q(1, 1) = 1;
 
-    cout << ocp.Q << endl;
-    cout << "R matrix is: " << endl;
+    // cout << ocp.Q << endl;
+    // cout << "R matrix is: " << endl;
     ocp.R(0, 0) = 1;
 
-    cout << ocp.R << endl;
+    // cout << ocp.R << endl;
 
     ocp.objective();
 
@@ -111,7 +112,7 @@ int main()
 
     cout << solver << endl;
 
-    ocp.run();
+    auto solution = ocp.run();
     // if you do not specify, it would use the default argument
     // ocp.run(solver);
 
@@ -170,8 +171,15 @@ int main()
 
     // cout << c.T;
     // libContactRichOpt::CartPole *c = new libContactRichOpt::CartPole;
-        plt::plot({1,3,2,4});
-    plt::show();
+    
+
+    
+    // plt::plot({1,3,2,4});
+    // plt::show();
+
+    // conpt_plot::plot();
+
+    conpt_plot::plot(solution, ocp);
 
     return 0;
 }
