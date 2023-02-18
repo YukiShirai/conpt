@@ -79,6 +79,8 @@ namespace conpt
 
         void bounds() override;
         void objective() override;
+        void init_const() override;
+        void terminal_const() override;
         casadi::OptiSol run(const std::string &solver = "ipopt") override;
         // void initialcondition(casadi::Opti &o, casadi::MX &x0) override;
         // void bounds_finaltime(casadi::Opti &o, casadi::MX &xT) override;

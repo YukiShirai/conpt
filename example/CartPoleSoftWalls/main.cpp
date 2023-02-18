@@ -109,6 +109,12 @@ int main()
 
     ocp.objective();
 
+    ocp.init_const();
+
+    // ocp.terminal_const();
+
+    
+
     // setup initial state constraints
     // setup terminal state constraints
 

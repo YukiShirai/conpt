@@ -39,9 +39,10 @@ namespace conpt
         virtual void bounds() = 0;
         virtual void objective() = 0;
         virtual casadi::OptiSol run(const std::string &solver) = 0;
-        // virtual void initialcondition(casadi::Opti &o, casadi::MX &x0) = 0;
-        // virtual void bounds_finaltime(casadi::Opti &o, casadi::MX &xT) = 0;
-        // virtual void constraint(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u) = 0;
+        virtual void init_const() = 0;
+        virtual void terminal_const() = 0;
+        
+        // virtual void constraint() = 0;
 
         // initial and terminal values
         Eigen::VectorXd xs;

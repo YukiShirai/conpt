@@ -139,12 +139,30 @@ namespace conpt
         {
             for (size_t j = 0; j < nu; j++)
             {
-                // TODO: Assume that the matrix is diagonal...
                 obj += (u(i, j)) * R(j, j) * (u(i, j));
             }
         }
         opti.minimize(obj);
     }
+
+    void CartPole::init_const()
+    {
+        std::cout << "init const" << std::endl;
+        for (size_t j = 0; j < nx; j++)
+        {
+            opti.subject_to(x(0, j) == xs(j));
+        }
+    }
+
+    void CartPole::terminal_const()
+    {
+        std::cout << "terminal const" << std::endl;
+        for (size_t j = 0; j < nx; j++)
+        {
+            opti.subject_to(x(T, j) == xg(j));
+        }
+    }
+
     casadi::OptiSol CartPole::run(const std::string &solver)
     {
         opti.solver(solver);
