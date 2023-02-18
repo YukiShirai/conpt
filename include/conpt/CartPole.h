@@ -25,7 +25,7 @@ namespace conpt
         double k1;
         double k2;
 
-        int T;
+        // int T;
         // std::vector<double> times;
 
         const int nx;
@@ -33,11 +33,11 @@ namespace conpt
         const int nz;
         const int nu;
 
-        casadi::Opti opti;
         casadi::MX x;
-        casadi::MX xdot;
         casadi::MX u;
         casadi::MX y;
+        casadi::MX xdot;
+        casadi::Opti opti;
 
         // for bounds
         Eigen::MatrixXd xb;
@@ -49,12 +49,31 @@ namespace conpt
         Eigen::MatrixXd Q;
         Eigen::MatrixXd R;
 
+        int T;
+
+        // casadi::Opti opti;
+        // casadi::MX x;
+        // casadi::MX xdot;
+        // casadi::MX u;
+        // casadi::MX y;
+
+        // // for bounds
+        // Eigen::MatrixXd xb;
+        // Eigen::MatrixXd xdotb;
+        // Eigen::MatrixXd ub;
+        // Eigen::MatrixXd yb;
+
+        // // for optimization matrix
+        // Eigen::MatrixXd Q;
+        // Eigen::MatrixXd R;
+
         // param::parameter p();
 
     public:
         CartPole();
         // CartPole(param::parameter p);
         CartPole(param::parameter &param);
+        CartPole(param::parameter &param, Eigen::VectorXd _xs, Eigen::VectorXd _xg);
         // // CartPole(param::parameter param);
         ~CartPole();
 

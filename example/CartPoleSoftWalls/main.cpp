@@ -47,8 +47,17 @@ int main()
 
     // setup casadi class
 
-    conpt::CartPole ocp(param);
-    // cout << ocp.xb << endl;
+    // set initial and goal state
+    Eigen::VectorXd xs = Eigen::VectorXd::Zero(4);
+    Eigen::VectorXd xg = Eigen::VectorXd::Zero(4);
+
+    xs << -0.152, 0, 0, 0;
+    xg << 0.05, 0.12, 0, 0;
+
+    conpt::CartPole ocp(param, xs, xg);
+    
+    cout << xg << endl;
+    cout << "xg before opt" << endl;
 
     Eigen::MatrixXd xlb = Eigen::MatrixXd::Zero(1, ocp.nx);
     Eigen::MatrixXd xub = Eigen::MatrixXd::Zero(1, ocp.nx);
@@ -73,10 +82,8 @@ int main()
     ulb << -30;
     uub << 30;
 
-
     ylb << 0, 0, 0, 0, 0, 0, 0, 0;
     yub << 0.02, 0.02, 30, 30, 10, 10, 10, 50;
-
 
     ocp.xb.row(0) << xlb;
     ocp.xb.row(1) << xub;
@@ -90,94 +97,27 @@ int main()
     ocp.yb.row(0) << ylb;
     ocp.yb.row(1) << yub;
 
-
-
     ocp.bounds();
 
-
     // setup optimization parameters
+    
+    ocp.Q = Eigen::MatrixXd::Identity(4, 4);
+    ocp.R = Eigen::MatrixXd::Identity(1, 1);
+    // ocp.Q(1, 1) = 1;
 
-    // ocp.Q << 0, 0, 0, 1;
-    ocp.Q(1, 1) = 1;
-
-    // cout << ocp.Q << endl;
-    // cout << "R matrix is: " << endl;
-    ocp.R(0, 0) = 1;
-
-    // cout << ocp.R << endl;
+    // ocp.R(0, 0) = 1;
 
     ocp.objective();
+
+    // setup initial state constraints
+    // setup terminal state constraints
 
     const std::string solver{"ipopt"};
 
     cout << solver << endl;
 
     auto solution = ocp.run();
-    // if you do not specify, it would use the default argument
-    // ocp.run(solver);
 
-    // ocp.opti.solver("ipopt");
-    // auto sol = ocp.opti.solve();
-
-    // cout << sol.value(ocp.x) << endl;
-
-
-
-    // specify your bound value:
-    // x
-    // xdot
-    // u
-    // y
-    
-
-    // casadi::Opti opti;
-    // casadi::MX x = opti.variable(ocp.T + 1, ocp.nx);
-    // casadi::MX xdot = opti.variable(ocp.T + 1, ocp.nx);
-    // casadi::MX u = opti.variable(ocp.T, ocp.nu);
-    // casadi::MX y = opti.variable(ocp.T, ocp.ny);
-
-    // cout << ocp.T << endl;
-
-    // // setup bounds
-
-    // // ocp.bounds(opti, x, xdot, u, y);
-
-    // // cout << "Eigen Version: " << EIGEN_MAJOR_VERSION << "." 
-    // // << EIGEN_MINOR_VERSION << endl;
-
-    // MatrixXf A; // Matrix 3 by 3 with float
-    // // Matrix3f B; // Matrix 4 by 4 with double
-
-    // int xx= 10;
-
-    // A = Eigen::MatrixXf::Zero(2,xx);
-    // // B.setConstant(2);
-
-    // // Matrix<short, 5, 5> M1;
-    // // Matrix<float, 20, 75> M2;
-    // // MatrixXf M3; // create unknown shape size of matrix with float
-
-    // // M1.setZero();
-    // // M3.setZero();
-
-    // cout << A << endl;
-
-    
-
-
-
-    // cout << "LOAD CARTPOLE" << endl;
-
-
-    // cout << c.T;
-    // libContactRichOpt::CartPole *c = new libContactRichOpt::CartPole;
-    
-
-    
-    // plt::plot({1,3,2,4});
-    // plt::show();
-
-    // conpt_plot::plot();
 
     conpt_plot::plot(solution, ocp);
 
