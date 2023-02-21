@@ -42,7 +42,7 @@ namespace conpt
         virtual void init_const() = 0;
         virtual void terminal_const() = 0;
         
-        // virtual void constraint() = 0;
+        virtual void constraint() = 0;
 
         // initial and terminal values
         Eigen::VectorXd xs;

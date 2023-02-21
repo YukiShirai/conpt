@@ -51,13 +51,10 @@ int main()
     Eigen::VectorXd xs = Eigen::VectorXd::Zero(4);
     Eigen::VectorXd xg = Eigen::VectorXd::Zero(4);
 
-    xs << -0.152, 0, 0, 0;
-    xg << 0.05, 0.12, 0, 0;
+    xs << -0.152, 0, 0.1, 0;
+    xg << -0.0, 0.0, 0, 0;
 
     conpt::CartPole ocp(param, xs, xg);
-    
-    cout << xg << endl;
-    cout << "xg before opt" << endl;
 
     Eigen::MatrixXd xlb = Eigen::MatrixXd::Zero(1, ocp.nx);
     Eigen::MatrixXd xub = Eigen::MatrixXd::Zero(1, ocp.nx);
@@ -67,6 +64,9 @@ int main()
 
     Eigen::MatrixXd ulb = Eigen::MatrixXd::Zero(1, ocp.nu);
     Eigen::MatrixXd uub = Eigen::MatrixXd::Zero(1, ocp.nu);
+    
+    Eigen::MatrixXd lambdalb = Eigen::MatrixXd::Zero(1, ocp.nlambda);
+    Eigen::MatrixXd lambdaub = Eigen::MatrixXd::Zero(1, ocp.nlambda);
 
     Eigen::MatrixXd ylb = Eigen::MatrixXd::Zero(1, ocp.ny);
     Eigen::MatrixXd yub = Eigen::MatrixXd::Zero(1, ocp.ny);
@@ -82,6 +82,9 @@ int main()
     ulb << -30;
     uub << 30;
 
+    lambdalb << 0, 0;
+    lambdaub << 0.02, 0.02;
+
     ylb << 0, 0, 0, 0, 0, 0, 0, 0;
     yub << 0.02, 0.02, 30, 30, 10, 10, 10, 50;
 
@@ -94,13 +97,16 @@ int main()
     ocp.ub.row(0) << ulb;
     ocp.ub.row(1) << uub;
 
+    ocp.lambdab.row(0) << lambdalb;
+    ocp.lambdab.row(1) << lambdaub;
+
     ocp.yb.row(0) << ylb;
     ocp.yb.row(1) << yub;
 
     ocp.bounds();
 
     // setup optimization parameters
-    
+
     ocp.Q = Eigen::MatrixXd::Identity(4, 4);
     ocp.R = Eigen::MatrixXd::Identity(1, 1);
     // ocp.Q(1, 1) = 1;
@@ -113,17 +119,14 @@ int main()
 
     // ocp.terminal_const();
 
-    
+    ocp.constraint();
 
     // setup initial state constraints
     // setup terminal state constraints
 
     const std::string solver{"ipopt"};
 
-    cout << solver << endl;
-
     auto solution = ocp.run();
-
 
     conpt_plot::plot(solution, ocp);
 
