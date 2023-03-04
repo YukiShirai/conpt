@@ -290,21 +290,6 @@ namespace conpt
             opti.subject_to(xdot_[i] == Ax[i] + Bu[i] + Clambda[i]);
         }
 
-        // cout << "AX" << Ax << endl;
-
-        // // do matrix calculation for each term of system dynamics
-        // for (size_t i = 0; i < A.rows(); i++)
-        // {
-        //     for (size_t j = 0; j < 1; j++) // assume that x is n by 1 matrix
-        //     {
-        //         for (size_t k = 0; k < A.cols(); k++)
-        //         {
-        //             Ax.push_back(A(i, k) * x_[k]);
-        //         }
-
-        //     }
-
-        // }
     }
 
     std::vector<casadi::MX> CartPole::multiply(Eigen::MatrixXd A_, std::vector<casadi::MX> &x_)
@@ -314,8 +299,8 @@ namespace conpt
         int C1 = A_.cols();
         int R1 = A_.rows();
         int R2 = x_.size();
-        cout << " A_ size " << C1 << ", " << R1 << endl;
-        cout << " B size " << R2 << endl;
+        // cout << " A_ size " << C1 << ", " << R1 << endl;
+        // cout << " B size " << R2 << endl;
 
         // check the size of matrix
         if (C1 != R2)
@@ -337,28 +322,14 @@ namespace conpt
                 for (size_t k = 0; k < A_.cols(); k++)
                 {
                     sum += A_(i, k) * x_[k];
-                    // cout << "A_(i, k): " << A_(i, k) << endl;
-                    // cout << "x_[k] :" << x_[k] << endl;
                 }
-                // casadi::MX temp = A_(i, 2) * x_[2] + 0.10;
+                
                 Ax.push_back(sum);
-                // cout << "Ak :" << Ax << endl;
             }
         }
 
         return Ax;
     }
 
-    // void CartPole::initialcondition(casadi::Opti &o, casadi::MX &x0)
-    // {
-    // }
 
-    // void CartPole::bounds_finaltime(casadi::Opti &o, casadi::MX &xT)
-    // {
-    // }
-
-    // void CartPole::constraint(casadi::Opti &o, casadi::MX &x, casadi::MX &xdot, casadi::MX &y, casadi::MX &u)
-    // {
-    // }
-
-} // end of namespace libContactRichOpt
+} 
