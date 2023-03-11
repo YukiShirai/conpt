@@ -21,7 +21,7 @@ Logic:
 */
 
 #include <iostream>
-#include "twoR.hpp"
+#include "threeR.hpp"
 #include "interpolation.hpp"
 #include <Eigen/Dense>
 
@@ -54,8 +54,10 @@ int main()
     inter.calcInterpolation();
 
     // Eigen::Vector3d theta = Eigen::Vector3d::Zero();
-    twoR robot;
-    // robot.FK(theta);
+    threeR robot;
+    Eigen::Vector3d EE;
+    EE << 0.1, 0.1, 0;
+    robot.IK(EE);
 
     return 0;
 }
