@@ -1,4 +1,4 @@
-set(example_name "PID_joint")
+set(example_name "PID_operational")
 
 
 add_executable(${example_name} main.cpp)
