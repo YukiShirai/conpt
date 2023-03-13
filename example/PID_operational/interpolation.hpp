@@ -9,6 +9,7 @@ using namespace std;
 template <typename T>
 void showlist(list<T> g)
 {
+    
     typename list<T>::iterator it;
     for (it = g.begin(); it != g.end(); ++it)
         cout  << *it << endl;

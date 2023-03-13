@@ -23,6 +23,8 @@ public:
     ~threeR();
     void FK(Eigen::Vector3d theta_);
     void IK(Eigen::Vector3d EE_);
+
+    void Jacobian(Eigen::Vector3d qd_);
 };
 
 threeR::threeR()
@@ -59,4 +61,10 @@ void threeR::IK(Eigen::Vector3d EE_)
     double th3 = th - th1 - th2;
 
     cout << th3 * (180 / M_PI) << endl;
+};
+
+void Jacobian(Eigen::Vector3d qd_){
+
+    
+
 };

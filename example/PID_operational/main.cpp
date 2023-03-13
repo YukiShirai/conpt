@@ -48,16 +48,59 @@ int main()
     Eigen::Matrix3d ori_g_;
     ori_g_ = Eigen::AngleAxisd(yaw_g, Eigen::Vector3d::UnitZ());
 
-
     interpolation inter(n, pos_s_, pos_g_, ori_s_, ori_g_);
 
     inter.calcInterpolation();
 
-    // Eigen::Vector3d theta = Eigen::Vector3d::Zero();
+    auto posInterpolation = inter.pos;
+    auto rotInterpolation = inter.ori;
+
+    // showlist(posInterpolation);
+
+    // convert 3d position and rotation matrix to 3d vector
+    list<Eigen::Vector3d>::iterator it;
+    list<Eigen::Matrix3d>::iterator it2;
+
+    // list for 3d array
+    list<Eigen::Vector3d> EE;
+
+    // Eigen::Vector3d EE;
+
+    for (it = posInterpolation.begin(), it2 = rotInterpolation.begin(); it != posInterpolation.end(); it++, it2++)
+    {
+        Eigen::Vector3d temp = Eigen::Vector3d::Zero();
+        temp(0) = (*it)(0);
+        temp(1) = (*it)(1);
+        temp(2) = atan2((*it2)(1, 0), (*it2)(0, 0));
+        EE.push_back(temp);
+        // cout << (*it2)(0, 1) << endl;
+        // cout << (*it) << endl;
+        // EE(0) = (*it)(0);
+        // EE(1) = (*it)(1);
+    }
+
+    // for(it2 = rotInterpolation.begin();it2!= rotInterpolation.end();it2++){
+    //     // cout << (*it2)(0,1) << endl;
+    //     EE(2) = atan2((*it2)(1,0), (*it2)(0,0));
+    // }
+    // showlist(EE);
+
+    // cout << "EE" << EE << endl;
+
+    // // Eigen::Vector3d theta = Eigen::Vector3d::Zero();
     threeR robot;
-    Eigen::Vector3d EE;
-    EE << 0.1, 0.1, 0;
-    robot.IK(EE);
+    // Eigen::Vector3d EE;
+    // EE << 0.1, 0.1, 0;
+
+    list<Eigen::Vector3d>::iterator it_ik;
+
+    for (it_ik = EE.begin(); it_ik != EE.end(); it_ik++)
+    {
+        robot.IK(*it_ik);
+    }
+
+    
+
 
     return 0;
 }
