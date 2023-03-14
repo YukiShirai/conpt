@@ -22,9 +22,9 @@ public:
     threeR();
     ~threeR();
     void FK(Eigen::Vector3d theta_);
-    void IK(Eigen::Vector3d EE_);
+    Eigen::Vector3d IK(Eigen::Vector3d EE_);
 
-    void Jacobian(Eigen::Vector3d qd_);
+    // void Jacobian(Eigen::Vector3d qd_);
 };
 
 threeR::threeR()
@@ -41,7 +41,7 @@ void threeR::FK(Eigen::Vector3d theta_)
     Eigen::Matrix4d T_A2B = Eigen::Matrix4d::Zero();
 }
 
-void threeR::IK(Eigen::Vector3d EE_)
+Eigen::Vector3d threeR::IK(Eigen::Vector3d EE_)
 {
     std::cout << "Hello IK" << endl;
     double x = EE_(0);
@@ -61,10 +61,17 @@ void threeR::IK(Eigen::Vector3d EE_)
     double th3 = th - th1 - th2;
 
     cout << th3 * (180 / M_PI) << endl;
+
+
+    Eigen::Vector3d joint_angles;
+    joint_angles(0) = th1;
+    joint_angles(1) = th2;
+    joint_angles(2) = th3;
+    return joint_angles;
 };
 
-void Jacobian(Eigen::Vector3d qd_){
+// void Jacobian(Eigen::Vector3d qd_){
 
     
 
-};
+// };
