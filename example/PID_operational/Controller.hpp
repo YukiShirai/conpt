@@ -23,10 +23,11 @@ public:
     int num_joint;
     double dt;
     Eigen::VectorXd u;
-    
+    Eigen::VectorXd pre_error;
+
 };
 
-Controller::Controller(int n_, double dt_) : num_joint(n_), dt(dt_), u(Eigen::VectorXd::Zero(n_))
+Controller::Controller(int n_, double dt_) : num_joint(n_), dt(dt_), u(Eigen::VectorXd::Zero(n_)), pre_error(Eigen::VectorXd::Zero(n_))
 {
     cout << "\033[1;31mBase class of the controller is called\033[0m\n";
 };
@@ -57,11 +58,14 @@ pdControl::pdControl(int n_, double dt_, Eigen::VectorXd Kp_, Eigen::VectorXd Kd
 void pdControl::calculateControl(Eigen::VectorXd &ref, Eigen::VectorXd &cur)
 {
     cout << "calc pd control..." << endl;
+    auto error = ref - cur;
+    auto d_error = (error - pre_error) / dt;
     for (int i = 0; i < num_joint; i++)
     {
         // cout << Kp(i) * (ref(i) - cur(i)) << endl;
-        u(i) = Kp(i) * (ref(i) - cur(i));
+        u(i) = Kp(i) * (error(i)) + Kd(i) * (d_error(i));
     }
+    pre_error = error;
 };
 
 // ////////////////////////////////////////////////
@@ -107,3 +111,4 @@ void stiffnessControl::calculateControlGravity(Eigen::VectorXd &ref, Eigen::Vect
         u[i] += -m * g * sin(u[i]);
     }
 };
+
