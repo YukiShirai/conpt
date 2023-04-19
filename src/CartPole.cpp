@@ -15,7 +15,7 @@ namespace conpt
 
     CartPole::CartPole() : TO_base(), nx(0), ny(0), nz(0), nu(0), nc(0), nlambda(0)
     {
-        std::cout << "constructor cartpole  no input for now with python!!!" << std::endl;
+        std::cout << "constructor cartpole no input for now with python!" << std::endl;
         // auto bound_x = Eigen::MatrixXf::Zero(2,3);
     }
 
