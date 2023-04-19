@@ -14,5 +14,3 @@ def test_less():
 
 def test_conpt_cartpole():
     cartpole = opt.CartPole()
-
-
