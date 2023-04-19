@@ -52,7 +52,7 @@ conpt supports python binding, pyconpt, through pybind11.
 sudo pip3 install virtualenv
 virtualenv -p /usr/bin/python3 env
 source env/bin/activate
-pip install numpy
+python3 -m pip install -r requirements.txt
 ```
 
 2. After you finish installing conpt from source, pyconpt should be ready to be used. For example, 
